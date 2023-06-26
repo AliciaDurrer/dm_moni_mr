@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <title>DM Moni MR</title>
+        <meta name="description" content="Project Page of the DM Moni MR publication">
+        <meta name="author" content="Alicia Durrer">
+        <link rel="stylesheet" type="text/css" href="style.css">
+    </head>
+    <body>
+        <!-- with inspiration from https://rutar.org/writing/how-to-build-a-personal-webpage-from-scratch/#an-overview-of-static-webpage-deployment -->
+        <div id="page">
+            <header>
+                <h1>Diffusion Models for <br> Contrast Harmonization of <br> Magnetic Resonance Images</h1>
+                <span id="venue"><a href="https://2023.midl.io/">Medical Imaging with Deep Learning (MIDL) 2023</a></span>
+                <br />
+                <br />
+                <span id="authors">
+                    <a href="mailto:alicia.durrer@unibas.ch">Alicia Durrer</a>,
+                    <a href="mailto:julia.wolleb@unibas.ch">Julia Wolleb</a>,
+                    <a href="mailto:florentin.bieder@unibas.ch">Florentin Bieder</a>,
+                    <a href="mailto:tim.sinnecker@usb.ch">Tim Sinnecker</a>,
+                    <a href="mailto:matthias.weigel@unibas.ch">Matthias Weigel</a>,
+                    <a href="mailto:robin.sandkuehler@unibas.ch">Robin Sandkuehler</a>,
+                    <a href="mailto:cristina.granziera@usb.ch">Cristina Granziera</a>,
+                    <a href="mailto:Oezguer.Yaldizli@usb.ch">Oezguer Yaldizli</a>,
+                    <a href="mailto:philippe.cattin@unibas.ch">Philippe C. Cattin</a>
+                </span>
+                <div id="affiliation">Center for medical Image Analysis &amp; Navigation (CIAN), University of Basel</div>
+
+                <nav>
+                    <ul>
+                        <li>
+                            <!-- https://static.arxiv.org/static/browse/0.3.4/images/icons/favicon-16x16.png -->
+                            <img src="icon_arxiv.png" alt="favicon" />
+                            <a href="https://arxiv.org/abs/2303.08189">ArXiv</a>
+                        </li>
+                        <li>
+                            <!-- https://openreview.net/favicon.ico -->
+                            <img src="icon_openreview.png" alt="favicon" />
+                            <a href="https://openreview.net/forum?id=Xs_Hd23_PP">OpenReview</a>
+                        </li>
+                        <li>
+                            <!-- https://github.githubassets.com/favicons/favicon.png -->
+                            <img src="icon_github.png" alt="favicon" />
+                            <a href="https://github.com/AliciaDurrer/dm_moni_mr">GitHub</a>
+                        </li>
+                        <li>
+                            <!-- https://www.unibas.ch/.resources/unibas-main/webresources/img/unibas.ico -->
+                            <img src="icon_unibas.ico"  alt="favicon" />
+                            <a href="https://dbe.unibas.ch/en/cian/">Homepage</a>
+                        </li>
+                    </ul>
+                </nav>
+            </header>
+            <article>
+
+                <!-- authors, affiliation --!>
+                    <h2>Abstract</h2>
+                    <p id="abstract">
+                    Magnetic resonance (MR) images from multiple sources often show differences in image
+                    contrast related to acquisition settings or the used scanner type. For long-term studies,
+                    longitudinal comparability is essential but can be impaired by these contrast differences,
+                    leading to biased results when using automated evaluation tools. This study presents a
+                    diffusion model-based approach for contrast harmonization. We use a data set consisting of
+                    scans of 18 Multiple Sclerosis patients and 22 healthy controls. Each subject was scanned
+                    in two MR scanners of different magnetic field strengths (1.5 T and 3 T), resulting in a
+                    paired data set that shows scanner-inherent differences. We map images from the source
+                    contrast to the target contrast for both directions, from 3 T to 1.5 T and from 1.5 T to 3 T.
+                    As we only want to change the contrast, not the anatomical information, our method uses
+                    the original image to guide the image-to-image translation process by adding structural
+                    information. The aim is that the mapped scans display increased comparability with scans
+                    of the target contrast for downstream tasks. We evaluate this method for the task of
+                    segmentation of cerebrospinal fluid, grey matter and white matter. Our method achieves
+                    good and consistent results for both directions of the mapping.
+                    <br>
+                        <br>
+                        <b>Keywords</b>:
+                        <br>Diffusion models, contrast harmonization, image-to-image translation
+                    </p>
+
+                    <a id="fig1"><img src="overview.png" alt="overview" /></a>
+                    <p class="caption">
+                    Fig. 1: Overview of our contrast harmonization method. We train a diffusion model
+                    using paired data from source contrast S and target contrast T. We translate
+                    scan <b>B</b> ∈ S to scan <b>B<sub>transformed</sub></b> that appears in contrast T, allowing better
+                    comparability with<b><span style="font-size: 7pt; position: relative; left: 7px; bottom: 9px; transfrom: scale(4,0.5); display:inline-block">^</span>B</b> ∈ T in subsequent tasks, such as segmentation.</p>
+
+                    <h2>Contribution</h2>
+                    <p>
+                    By adapting a Denoising Diffusion Probabilistic Model (DDPM) [1][2] for contrast harmonization, we translate images from a source
+                    contrast S to a target contrast T . Considering a pair <b>B</b> ∈ S,<b><span style="font-size: 9pt; position: relative; left: 9px; bottom: 10px; transfrom: scale(4,0.5); display:inline-block">^</span>B</b> ∈ T, we map scan <b>B</b>
+                    slice-by-slice to scan <b>B<sub>transformed</sub></b>, appearing in the contrast of T, as shown in Fig. 1. We
+                    generate consistent three-dimensional (3D) volumes by stacking two-dimensional (2D) slices,
+                    allowing us to save memory during image-to-image translation. Compared to the original
+                    <b>B</b>, <b>B<sub>transformed</sub></b> presents better comparability with<b><span style="font-size: 9pt; position: relative; left: 9px; bottom: 10px; transfrom: scale(4,0.5); display:inline-block">^</span>B</b> from T, with respect to downstream
+                    tasks such as segmentation of grey matter (GM), white matter (WM) and cerebrospinal
+                    fluid (CSF) using FAST [3]. We achieve good results for both directions.
+                    For the equations mentioned in this section we refer to the paper.
+                    </p>
+
+                    <a id="fig2"><img src="training.png" alt="training method" /></a>
+                    <p class="caption">
+                    Fig. 2: Overview of the training. Anatomical information is given through the concatenation of image
+                    <b>b<sub>i</sub></b> from <b>B</b> ∈ S with noisy image <i>x<sub>b<sub>i,t</sub></sub></i> . <i>X<sub>t</sub></i> is used by the diffusion
+                    model to predict a slightly denoised image <i>x<sub>b<sub>i,t-1</sub></sub></i> from <i>x<sub>b<sub>i,t</sub></sub></i> using Eqn. 4.</p>
+
+                    <p>During training, shown in Fig. 2, we pick a random timestep t and create a noisy image from<i><span style="position: relative; left: 8px; bottom: 7px; transfrom: scale(4,0.5); display:inline-block">^</span>b<sub>i</sub></i>.
+                        Since we only want to change the scanner-related image contrast and not any anatomical features, we add anatomical information of our source contrast slice bi through concatenation.
+                        The concatenated image then serves as input to our diffusion model that predicts the noise at that time step t. Furthermore, it allows the computation of a slightly denoised image.
+                        During sampling, visualized in Fig. 3, the previously trained diffusion model is applied for every slice for every denoising step, whereby anatomical information is again added through concatenation with the source contrast slice.
+                        The slices are then stacked to a 3D volume.</p>
+
+                    <a id="fig3"><img src="sampling.png" alt="sampling method" /></a>
+                    <p class="caption">
+                    Fig. 3: Translation from <b>B</b> ∈ S to <b>B<sub>transformed</sub></b>. Each slice <b>b<sub>i</sub></b> of <b>B</b> ∈ S is iteratively
+                    denoised by applying Eqn. 4 for steps <i>t</i> ∈ <i>{T, ..., 1}</i>, whereby slice <b>b<sub>i</sub></b> is used
+                    to add anatomical information through concatenation. The 2D output slices
+                    {<i>x<sub>b<sub>i,0</sub></sub></i>}<span class="supsub"><span>n</span><span>i=1</span></span> get stacked to <b>B<sub>transformed</sub></b>,
+                    showing the input scan <b>B</b> translated to T .</p>
+
+
+                    <h2>Results</h2>
+                Here we present some selected results. For more results refer to the paper. We compare our results to DeepHarmony <i>(DH)</i> [4] and <i>pGAN</i> [5].
+                Fig. 4 shows an exemplary coronal slice before and after harmonization for both directions of the mapping.
+                Our <i>DM</i> outperforms <i>DH</i> and <i>pGAN</i> for the mapping from 1.5 T to 3 T and generates good results for the mapping from 3 T to 1.5 T.
+                    
+                    <a id="fig4"><img src="results.png" alt="exemplary coronal slices" /></a>
+                    <p class="caption">
+                    Fig. 4: An exemplary coronal slice of a scan  <b>B</b> ∈ S, the corresponding ground truth (GT)
+                    slice of<b><span style="font-size: 7pt; position: relative; left: 7px; bottom: 9px; transfrom: scale(4,0.5); display:inline-block">^</span>B</b>∈ T and slices of its mappings <b>B<sub>transformed</sub></b> in contrast T generated by
+                    DH, pGAN and our DM are shown for both mapping directions. The red circles
+                    indicate hyperintense regions generated by DH. The blue arrows point at stripe
+                    artifacts produced by pGAN.</p>
+
+                    <h2>Cite</h2>
+                    <h3>BibTeX</h3>
+                    <p>
+                    <div class="codeblock">
+                    <pre><code>@article{durrer2023diffusion,
+  title={Diffusion Models for Contrast Harmonization of Magnetic Resonance Images},
+  author={Durrer, Alicia and Wolleb, Julia and Bieder, Florentin and Sinnecker, Tim and Weigel, Matthias and Sandkuehler, Robin and Granziera, Cristina and Yaldizli, Oezguer and Cattin, Philippe C},
+  journal={arXiv preprint arXiv:2303.08189},
+  year={2023}
+}</code></pre>
+                    </div>
+            </article>
+        </div>
+
+        <h2>Sources</h2>
+
+        <p class="caption">
+            [1] Jonathan Ho, Ajay Jain, and Pieter Abbeel. Denoising diffusion probabilistic models. <i>Advances in Neural Information Processing Systems</i>, 33:6840–6851, 2020. <br>
+            [2] Julia Wolleb, Robin Sandkuehler, Florentin Bieder, Philippe Valmaggia, and Philippe C Cattin. Diffusion models for implicit image segmentation ensembles. In <i>Medical Imaging with Deep Learning</i>, pages 1336–1348. PMLR, 2022b. <br>
+        [3] Yongyue Zhang, Michael Brady, and Stephen Smith. Segmentation of brain mr images through a hidden markov random field model and the expectation-maximization algorithm. <i>IEEE transactions on medical imaging</i>, 20(1):45–57, 2001. <br>
+        [4] Blake E Dewey, Can Zhao, Jacob C Reinhold, Aaron Carass, Kathryn C Fitzgerald, Elias S Sotirchos, Shiv Saidha, Jiwon Oh, Dzung L Pham, Peter A Calabresi, et al. Deepharmony: A deep learning approach to contrast harmonization across scanner changes. <i>Magnetic resonance imaging</i>, 64:160–170, 2019. <br>
+        [5] Salman UH Dar, Mahmut Yurt, Levent Karacan, Aykut Erdem, Erkut Erdem, and Tolga Cukur. Image synthesis in multi-contrast mri with conditional generative adversarial networks. <i>IEEE transactions on medical imaging</i>, 38(10):2375–2388, 2019. <br>
+        </p>
+
+        <footer>
+            <p>
+            &copy; Alicia Durrer, Florentin Bieder
+            </p>
+        </footer>
+    </body>
+</html>
+
