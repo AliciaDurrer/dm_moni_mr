@@ -187,13 +187,6 @@ class TrainLoop:
             #print('1')
             self.run_step(batch, cond)
 
-            #print('2')
-
-            sample = self.run_step(batch, cond)
-            randint = numpy.random.randint(0,10000)
-            if randint == 1111:
-              print(sample.shape)
-              viz.image(visualize(sample[0,:,:].cpu().detach().numpy()), opts=dict(caption="sample"))
             i += 1
           
             if self.step % self.log_interval == 0:
